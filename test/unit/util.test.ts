@@ -1,18 +1,22 @@
 /**
  * @author WMXPY
- * @namespace JWT
- * @description Creator
+ * @namespace JWT_Web
+ * @description Util
  * @package Unit Test
  */
 
+import { generateKeyPair, KeyPair } from '@sudoo/token';
 import { expect } from 'chai';
 import * as Chance from 'chance';
-import { TokenTuple } from '../../src/declare';
-import { verifyTokenPatternByTuple } from '../../src/util';
+import { TokenMap, TokenTuple } from '../../src/declare';
+import { parseJWTToken, verifyTokenPatternByTuple } from '../../src/util';
+import { createMockJWT } from '../mock/token';
 
 describe('Given [Util] help methods', (): void => {
 
     const chance: Chance.Chance = new Chance('jwt-web-util');
+
+    const keyPair: KeyPair = generateKeyPair();
 
     it('should be able to deconstruct JWT - happy path', (): void => {
 
@@ -37,5 +41,25 @@ describe('Given [Util] help methods', (): void => {
         const result: boolean = verifyTokenPatternByTuple(tuple);
 
         expect(result).to.be.false;
+    });
+
+    it('should be able to parse JWT token', (): void => {
+
+        const headerKey: string = chance.string();
+        const headerValue: string = chance.string();
+        const bodyKey: string = chance.string();
+        const bodyValue: string = chance.string();
+
+        const token: string = createMockJWT(keyPair, {
+            [headerKey]: headerValue,
+        }, {
+            [bodyKey]: bodyValue,
+        });
+
+        const result: TokenMap<any, any> | null = parseJWTToken(token);
+
+        expect(result).to.be.deep.equal({
+
+        });
     });
 });

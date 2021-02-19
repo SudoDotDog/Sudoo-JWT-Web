@@ -27,4 +27,14 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
         this._body = body;
         this._signature = signature;
     }
+
+    public get header(): Header {
+        return this._header;
+    }
+    public get body(): Body {
+        return this._body;
+    }
+    public get signature(): string {
+        return this._signature;
+    }
 }
