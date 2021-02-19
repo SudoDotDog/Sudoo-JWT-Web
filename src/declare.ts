@@ -24,3 +24,10 @@ export type JWTFixedHeader = {
 export type JWTJoinedHeader<Header extends Record<string, any>> = Header & JWTFixedHeader;
 
 export type TokenTuple = [string, string, string];
+
+export type TokenMap<Header extends Record<string, any>, Body extends Record<string, any>> = {
+
+    header: JWTJoinedHeader<Header>;
+    body: Body;
+    signature: string;
+};
