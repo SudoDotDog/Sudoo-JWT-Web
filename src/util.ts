@@ -21,9 +21,15 @@ export const verifyTokenPatternByTuple = (tuple: TokenTuple): boolean => {
     return true;
 };
 
-export const decodeJWTSlice = (encoded: string): any => JSON.parse(atob(encoded));
+export const decodeJWTSlice = (
+    encoded: string,
+    atobFunction: (value: string) => string,
+): any => JSON.parse(atobFunction(encoded));
 
-export const parseJWTToken = <Header extends Record<string, any>, Body extends Record<string, any>>(token: string): TokenMap<Header, Body> | null => {
+export const parseJWTToken = <Header extends Record<string, any>, Body extends Record<string, any>>(
+    token: string,
+    atobFunction: (value: string) => string = atob,
+): TokenMap<Header, Body> | null => {
 
     const jwtTuple: TokenTuple = deconstructJWT(token);
     const verifyResult: boolean = verifyTokenPatternByTuple(jwtTuple);
@@ -35,8 +41,8 @@ export const parseJWTToken = <Header extends Record<string, any>, Body extends R
     const [header, body, signature] = jwtTuple;
 
     return {
-        header: decodeJWTSlice(header),
-        body: decodeJWTSlice(body),
+        header: decodeJWTSlice(header, atobFunction),
+        body: decodeJWTSlice(body, atobFunction),
         signature,
     };
 };

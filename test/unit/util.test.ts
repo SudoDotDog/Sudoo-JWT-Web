@@ -10,6 +10,7 @@ import { expect } from 'chai';
 import * as Chance from 'chance';
 import { TokenMap, TokenTuple } from '../../src/declare';
 import { parseJWTToken, verifyTokenPatternByTuple } from '../../src/util';
+import { mockAtobFunction } from '../mock/atob';
 import { createMockJWT } from '../mock/token';
 
 describe('Given [Util] help methods', (): void => {
@@ -50,16 +51,27 @@ describe('Given [Util] help methods', (): void => {
         const bodyKey: string = chance.string();
         const bodyValue: string = chance.string();
 
+        const issuedAt: Date = new Date();
+
         const token: string = createMockJWT(keyPair, {
             [headerKey]: headerValue,
         }, {
             [bodyKey]: bodyValue,
-        });
+        }, issuedAt);
 
-        const result: TokenMap<any, any> | null = parseJWTToken(token);
+        const result: TokenMap<any, any> | null = parseJWTToken(token, mockAtobFunction);
 
         expect(result).to.be.deep.equal({
-
+            body: {
+                [bodyKey]: bodyValue,
+            },
+            header: {
+                typ: "JWT",
+                alg: "RS256",
+                iat: issuedAt.getTime(),
+                [headerKey]: headerValue,
+            },
+            signature: token.substring(token.lastIndexOf('.') + 1),
         });
     });
 });
