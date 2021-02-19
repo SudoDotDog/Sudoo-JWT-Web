@@ -7,17 +7,35 @@
 
 import { expect } from 'chai';
 import * as Chance from 'chance';
-import { JWTCreator } from '../../src';
-import { MockKeyPairGenerator } from '../mock/generate';
+import { TokenTuple } from '../../src/declare';
+import { verifyTokenPatternByTuple } from '../../src/util';
 
 describe('Given [Util] help methods', (): void => {
 
     const chance: Chance.Chance = new Chance('jwt-web-util');
 
-    it('should be able to deconstruct JWT', (): void => {
+    it('should be able to deconstruct JWT - happy path', (): void => {
 
-        const creator: JWTCreator = JWTCreator.instantiate(keyPair.singleLinePrivate);
+        const header: string = chance.word();
+        const body: string = chance.word();
+        const signature: string = chance.word();
 
-        expect(creator).to.be.instanceOf(JWTCreator);
+        const tuple: TokenTuple = [header, body, signature];
+
+        const result: boolean = verifyTokenPatternByTuple(tuple);
+
+        expect(result).to.be.true;
+    });
+
+    it('should be able to deconstruct JWT - sad path', (): void => {
+
+        const header: string = chance.word();
+        const signature: string = chance.word();
+
+        const tuple: any = [header, signature];
+
+        const result: boolean = verifyTokenPatternByTuple(tuple);
+
+        expect(result).to.be.false;
     });
 });
