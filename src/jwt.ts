@@ -12,7 +12,10 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
     // eslint-disable-next-line @typescript-eslint/no-shadow
     public static fromString<Header extends Record<string, any>, Body extends Record<string, any>>(token: string): JWTToken<Header, Body> {
 
-        const tokenMap: TokenMap<Header, Body> = parseJWTToken(token);
+        const tokenMap: TokenMap<Header, Body> | null = parseJWTToken(token);
+        if (!tokenMap) {
+            throw new Error("[Sudoo-JWT-Web] Invalid Token");
+        }
 
         return new JWTToken(tokenMap.header, tokenMap.body, tokenMap.signature);
     }
