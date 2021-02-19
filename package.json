@@ -15,9 +15,6 @@
 		"url": "https://github.com/SudoDotDog/Sudoo-JWT-Web/issues"
 	},
 	"homepage": "https://github.com/SudoDotDog/Sudoo-JWT-Web#readme",
-	"peerDependencies": {
-		"@sudoo/token": "*"
-	},
 	"devDependencies": {
 		"@sudoo/io": "^1.8.0",
 		"@sudoo/jwt": "^1.0.0",
