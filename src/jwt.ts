@@ -17,7 +17,11 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
             throw new Error("[Sudoo-JWT-Web] Invalid Token");
         }
 
-        return new JWTToken(tokenMap.header, tokenMap.body, tokenMap.signature);
+        return new JWTToken(
+            tokenMap.header,
+            tokenMap.body,
+            tokenMap.signature,
+        );
     }
 
     private readonly _header: Header;
