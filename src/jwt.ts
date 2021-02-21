@@ -4,7 +4,7 @@
  * @description JWT
  */
 
-import { TokenMap } from "./declare";
+import { Base64Decoder, Base64Encoder, TokenMap } from "./declare";
 import { parseJWTToken, stringifyJWTToken } from "./util";
 
 declare const window: any;
@@ -14,10 +14,10 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
     // eslint-disable-next-line @typescript-eslint/no-shadow
     public static fromToken<Header extends Record<string, any>, Body extends Record<string, any>>(
         token: string,
-        atobFunction: (value: string) => string = window.atob,
+        encoder: Base64Encoder = window.atob,
     ): JWTToken<Header, Body> {
 
-        const tokenMap: TokenMap<Header, Body> | null = parseJWTToken(token, atobFunction);
+        const tokenMap: TokenMap<Header, Body> | null = parseJWTToken(token, encoder);
 
         if (!tokenMap) {
             throw new Error("[Sudoo-JWT-Web] Invalid Token");
@@ -52,14 +52,14 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
     }
 
     public stringify(
-        btoaFunction: (value: string) => string = window.btoa,
+        decoder: Base64Decoder = window.btoa,
     ): string {
 
         return stringifyJWTToken(
             this._header,
             this._body,
             this._signature,
-            btoaFunction,
+            decoder,
         );
     }
 }

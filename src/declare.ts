@@ -31,3 +31,6 @@ export type TokenMap<Header extends Record<string, any>, Body extends Record<str
     body: Body;
     signature: string;
 };
+
+export type Base64Encoder = (original: string) => string;
+export type Base64Decoder = (original: string) => string;

@@ -4,7 +4,7 @@
  * @description Util
  */
 
-import { TokenMap, TokenTuple } from "./declare";
+import { Base64Decoder, Base64Encoder, TokenMap, TokenTuple } from "./declare";
 
 export const deconstructJWT = (token: string): TokenTuple => {
 
@@ -23,17 +23,17 @@ export const verifyTokenPatternByTuple = (tuple: TokenTuple): boolean => {
 
 export const decodeJWTSlice = (
     encoded: string,
-    atobFunction: (value: string) => string,
-): any => JSON.parse(atobFunction(encoded));
+    encoder: Base64Encoder,
+): any => JSON.parse(encoder(encoded));
 
 export const encodeJWTSlice = (
     original: any,
-    btoaFunction: (value: string) => string,
-): any => btoaFunction(JSON.stringify(original));
+    decoder: Base64Decoder,
+): any => decoder(JSON.stringify(original));
 
 export const parseJWTToken = <Header extends Record<string, any>, Body extends Record<string, any>>(
     token: string,
-    atobFunction: (value: string) => string,
+    encoder: Base64Encoder,
 ): TokenMap<Header, Body> | null => {
 
     const jwtTuple: TokenTuple = deconstructJWT(token);
@@ -46,8 +46,8 @@ export const parseJWTToken = <Header extends Record<string, any>, Body extends R
     const [header, body, signature] = jwtTuple;
 
     return {
-        header: decodeJWTSlice(header, atobFunction),
-        body: decodeJWTSlice(body, atobFunction),
+        header: decodeJWTSlice(header, encoder),
+        body: decodeJWTSlice(body, encoder),
         signature,
     };
 };
@@ -56,11 +56,11 @@ export const stringifyJWTToken = <Header extends Record<string, any>, Body exten
     header: Header,
     body: Body,
     signature: string,
-    btoaFunction: (value: string) => string,
+    decoder: Base64Decoder,
 ): string => {
 
-    const encodedHeader: string = encodeJWTSlice(header, btoaFunction);
-    const encodedBody: string = encodeJWTSlice(body, btoaFunction);
+    const encodedHeader: string = encodeJWTSlice(header, decoder);
+    const encodedBody: string = encodeJWTSlice(body, decoder);
 
     const jwtToken = `${encodedHeader}.${encodedBody}.${signature}`;
 
