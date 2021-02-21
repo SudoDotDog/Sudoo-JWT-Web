@@ -14,3 +14,17 @@ yarn add @sudoo/jwt-web
 # Or
 npm install @sudoo/jwt-web --save
 ```
+
+## Usage
+
+```ts
+import { JWTToken } from "@sudoo/jwt-web";
+
+const token: JWTToken<Header, Body> = JWTToken.fromToken(rawToken);
+
+token.header; // Header
+token.body; // Body
+token.signature; // Signature
+
+token.stringify(); // Re-encode token
+```
