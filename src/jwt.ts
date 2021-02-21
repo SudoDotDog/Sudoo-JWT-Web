@@ -10,7 +10,7 @@ import { parseJWTToken } from "./util";
 export class JWTToken<Header extends Record<string, any>, Body extends Record<string, any>> {
 
     // eslint-disable-next-line @typescript-eslint/no-shadow
-    public static fromString<Header extends Record<string, any>, Body extends Record<string, any>>(token: string): JWTToken<Header, Body> {
+    public static fromToken<Header extends Record<string, any>, Body extends Record<string, any>>(token: string): JWTToken<Header, Body> {
 
         const tokenMap: TokenMap<Header, Body> | null = parseJWTToken(token);
         if (!tokenMap) {
