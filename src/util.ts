@@ -28,6 +28,11 @@ export const decodeJWTSlice = (
     atobFunction: (value: string) => string,
 ): any => JSON.parse(atobFunction(encoded));
 
+export const encodeJWTSlice = (
+    original: any,
+    btoaFunction: (value: string) => string,
+): any => btoaFunction(JSON.stringify(original));
+
 export const parseJWTToken = <Header extends Record<string, any>, Body extends Record<string, any>>(
     token: string,
     atobFunction: (value: string) => string = window.atob,
@@ -47,4 +52,19 @@ export const parseJWTToken = <Header extends Record<string, any>, Body extends R
         body: decodeJWTSlice(body, atobFunction),
         signature,
     };
+};
+
+export const stringifyJWTToken = <Header extends Record<string, any>, Body extends Record<string, any>>(
+    header: Header,
+    body: Body,
+    signature: string,
+    btoaFunction: (value: string) => string = window.btoa,
+): string => {
+
+    const encodedHeader: string = encodeJWTSlice(header, btoaFunction);
+    const encodedBody: string = encodeJWTSlice(body, btoaFunction);
+
+    const jwtToken = `${encodedHeader}.${encodedBody}.${signature}`;
+
+    return jwtToken;
 };
