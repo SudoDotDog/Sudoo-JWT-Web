@@ -6,8 +6,6 @@
 
 import { TokenMap, TokenTuple } from "./declare";
 
-declare const window: any;
-
 export const deconstructJWT = (token: string): TokenTuple => {
 
     const tuple: TokenTuple = token.split('.') as TokenTuple;
@@ -35,7 +33,7 @@ export const encodeJWTSlice = (
 
 export const parseJWTToken = <Header extends Record<string, any>, Body extends Record<string, any>>(
     token: string,
-    atobFunction: (value: string) => string = window.atob,
+    atobFunction: (value: string) => string,
 ): TokenMap<Header, Body> | null => {
 
     const jwtTuple: TokenTuple = deconstructJWT(token);
@@ -58,7 +56,7 @@ export const stringifyJWTToken = <Header extends Record<string, any>, Body exten
     header: Header,
     body: Body,
     signature: string,
-    btoaFunction: (value: string) => string = window.btoa,
+    btoaFunction: (value: string) => string,
 ): string => {
 
     const encodedHeader: string = encodeJWTSlice(header, btoaFunction);
