@@ -9,7 +9,7 @@ import { generateKeyPair, KeyPair } from '@sudoo/token';
 import { expect } from 'chai';
 import * as Chance from 'chance';
 import { JWTToken } from '../../src/jwt';
-import { mockAtobFunction } from '../mock/atob';
+import { mockAtobFunction, mockBtoaFunction } from '../mock/atob';
 import { createMockJWT } from '../mock/token';
 
 describe('Given {JWTToken} Class', (): void => {
@@ -44,5 +44,26 @@ describe('Given {JWTToken} Class', (): void => {
         expect(result.body).to.be.deep.equal({
             [bodyKey]: bodyValue,
         });
+    });
+
+    it('should be able to stringify JWTToken Class', (): void => {
+
+        const headerKey: string = chance.string();
+        const headerValue: string = chance.string();
+        const bodyKey: string = chance.string();
+        const bodyValue: string = chance.string();
+
+        const issuedAt: Date = new Date();
+
+        const token: string = createMockJWT(keyPair, {
+            [headerKey]: headerValue,
+        }, {
+            [bodyKey]: bodyValue,
+        }, issuedAt);
+
+        const instance: JWTToken<any, any> = JWTToken.fromToken(token, mockAtobFunction);
+        const result: string = instance.stringify(mockBtoaFunction);
+
+        expect(result).to.be.equal(token);
     });
 });
