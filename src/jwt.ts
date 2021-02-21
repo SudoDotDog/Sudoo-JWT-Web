@@ -5,7 +5,7 @@
  */
 
 import { TokenMap } from "./declare";
-import { parseJWTToken } from "./util";
+import { parseJWTToken, stringifyJWTToken } from "./util";
 
 export class JWTToken<Header extends Record<string, any>, Body extends Record<string, any>> {
 
@@ -13,6 +13,7 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
     public static fromToken<Header extends Record<string, any>, Body extends Record<string, any>>(token: string): JWTToken<Header, Body> {
 
         const tokenMap: TokenMap<Header, Body> | null = parseJWTToken(token);
+
         if (!tokenMap) {
             throw new Error("[Sudoo-JWT-Web] Invalid Token");
         }
@@ -43,5 +44,14 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
     }
     public get signature(): string {
         return this._signature;
+    }
+
+    public stringify(): string {
+
+        return stringifyJWTToken(
+            this._header,
+            this._body,
+            this._signature,
+        );
     }
 }
