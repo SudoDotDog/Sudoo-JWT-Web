@@ -53,7 +53,7 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
 
     public verifyExpiration(currentTime: Date = new Date()): boolean {
 
-        if (typeof this._header.exp === 'string'
+        if (typeof this._header.exp === 'undefined'
             || this._header.exp === null) {
             return true;
         }
