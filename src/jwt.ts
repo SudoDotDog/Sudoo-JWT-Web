@@ -51,6 +51,18 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
         return this._signature;
     }
 
+    public verifyExpiration(currentTime: Date = new Date()): boolean {
+
+        if (typeof this._header.exp === 'string'
+            || this._header.exp === null) {
+            return true;
+        }
+        if (typeof this._header.exp !== 'number') {
+            return false;
+        }
+        return currentTime.getTime() < this._header.exp;
+    }
+
     public stringify(
         decoder: Base64Decoder = window.btoa,
     ): string {
