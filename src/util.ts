@@ -23,13 +23,17 @@ export const verifyTokenPatternByTuple = (tuple: TokenTuple): boolean => {
 
 export const decodeJWTSlice = (
     encoded: string,
-    encoder: Base64Encoder,
-): any => JSON.parse(encoder(encoded));
+    decoder: Base64Decoder,
+): any => JSON.parse(decoder(encoded));
 
 export const encodeJWTSlice = (
     original: any,
-    decoder: Base64Decoder,
-): any => decoder(JSON.stringify(original));
+    encoder: Base64Encoder,
+): any => {
+
+    const encoded: string = encoder(JSON.stringify(original));
+    return encoded.replace(/=/g, '');
+};
 
 export const parseJWTToken = <Header extends Record<string, any>, Body extends Record<string, any>>(
     token: string,
