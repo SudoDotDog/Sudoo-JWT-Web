@@ -1,6 +1,6 @@
 {
 	"name": "@sudoo/jwt-web",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": ":clap: JWT implementation for Web",
 	"repository": {
 		"type": "git",
@@ -17,9 +17,9 @@
 	"homepage": "https://github.com/SudoDotDog/Sudoo-JWT-Web#readme",
 	"devDependencies": {
 		"@sudoo/io": "^1.8.0",
-		"@sudoo/jwt": "^1.0.0",
+		"@sudoo/jwt": "^1.2.0",
 		"@sudoo/token": "^1.6.0",
-		"@sudoo/triforce": "^2.9.15"
+		"@sudoo/triforce": "^2.9.16"
 	},
 	"nyc": {
 		"extension": [
