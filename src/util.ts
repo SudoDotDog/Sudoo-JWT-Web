@@ -19,6 +19,25 @@ export const getCurrentUnixTime = (): number => {
     return convertJSTimeToUnixTime(Date.now());
 };
 
+export const fixUndefinableDate = (target?: Date): number | undefined => {
+
+    if (typeof target === 'undefined') {
+        return undefined;
+    }
+
+    if (!target.getTime) {
+        return undefined;
+    }
+
+    const time: number = target.getTime();
+
+    if (isNaN(time)) {
+        return undefined;
+    }
+
+    return convertJSTimeToUnixTime(time);
+};
+
 export const deconstructJWT = (token: string): TokenTuple => {
 
     const tuple: TokenTuple = token.split('.') as TokenTuple;

@@ -4,6 +4,7 @@
  * @description JWT
  */
 
+import { fixUndefinableDate } from "@sudoo/jwt";
 import { Base64Decoder, Base64Encoder, TokenMap } from "./declare";
 import { parseJWTToken, stringifyJWTToken } from "./util";
 
@@ -60,7 +61,13 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
         if (typeof this._header.exp !== 'number') {
             return false;
         }
-        return currentTime.getTime() < this._header.exp;
+
+        const fixedTime: number | undefined = fixUndefinableDate(currentTime);
+
+        if (typeof fixedTime !== 'number') {
+            return false;
+        }
+        return fixedTime < this._header.exp;
     }
 
     public stringify(
