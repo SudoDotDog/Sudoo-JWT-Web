@@ -6,6 +6,19 @@
 
 import { Base64Decoder, Base64Encoder, TokenMap, TokenTuple } from "./declare";
 
+export const convertJSTimeToUnixTime = (jsTime: number): number => {
+
+    const draftTime: number = jsTime / 1000;
+    const roundedTime: number = Math.floor(draftTime);
+
+    return roundedTime;
+};
+
+export const getCurrentUnixTime = (): number => {
+
+    return convertJSTimeToUnixTime(Date.now());
+};
+
 export const deconstructJWT = (token: string): TokenTuple => {
 
     const tuple: TokenTuple = token.split('.') as TokenTuple;
