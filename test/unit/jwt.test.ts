@@ -9,6 +9,7 @@ import { generateKeyPair, KeyPair } from '@sudoo/token';
 import { expect } from 'chai';
 import * as Chance from 'chance';
 import { JWTToken } from '../../src/jwt';
+import { convertJSTimeToUnixTime } from '../../src/util';
 import { mockAtobFunction, mockBtoaFunction } from '../mock/atob';
 import { createMockJWT } from '../mock/token';
 
@@ -38,7 +39,7 @@ describe('Given {JWTToken} Class', (): void => {
         expect(result.header).to.be.deep.equal({
             "alg": "RS256",
             "typ": "JWT",
-            "iat": issuedAt.getTime(),
+            "iat": convertJSTimeToUnixTime(issuedAt.getTime()),
             [headerKey]: headerValue,
         });
         expect(result.body).to.be.deep.equal({

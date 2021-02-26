@@ -9,7 +9,7 @@ import { generateKeyPair, KeyPair } from '@sudoo/token';
 import { expect } from 'chai';
 import * as Chance from 'chance';
 import { TokenMap, TokenTuple } from '../../src/declare';
-import { parseJWTToken, verifyTokenPatternByTuple } from '../../src/util';
+import { convertJSTimeToUnixTime, parseJWTToken, verifyTokenPatternByTuple } from '../../src/util';
 import { mockAtobFunction } from '../mock/atob';
 import { createMockJWT } from '../mock/token';
 
@@ -68,7 +68,7 @@ describe('Given [Util] help methods', (): void => {
             header: {
                 typ: "JWT",
                 alg: "RS256",
-                iat: issuedAt.getTime(),
+                iat: convertJSTimeToUnixTime(issuedAt.getTime()),
                 [headerKey]: headerValue,
             },
             signature: token.substring(token.lastIndexOf('.') + 1),
