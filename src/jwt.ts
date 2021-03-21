@@ -4,9 +4,8 @@
  * @description JWT
  */
 
-import { fixUndefinableDate } from "@sudoo/jwt";
 import { Base64Decoder, Base64Encoder, TokenMap } from "./declare";
-import { parseJWTToken, stringifyJWTToken } from "./util";
+import { fixUndefinableDate, parseJWTToken, stringifyJWTToken } from "./util";
 
 declare const window: any;
 
