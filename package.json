@@ -19,7 +19,7 @@
 		"@sudoo/io": "^1.8.0",
 		"@sudoo/jwt": "^1.4.0",
 		"@sudoo/token": "^1.6.0",
-		"@sudoo/triforce": "^2.9.20"
+		"@sudoo/triforce": "^2.9.25"
 	},
 	"nyc": {
 		"extension": [
