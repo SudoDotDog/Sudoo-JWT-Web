@@ -4,7 +4,7 @@
  * @description JWT
  */
 
-import { Base64Decoder, Base64Encoder, TokenMap } from "./declare";
+import { Base64Decoder, Base64Encoder, JWTFixedHeader, TokenMap } from "./declare";
 import { fixUndefinableDate, parseJWTToken, stringifyJWTToken } from "./util";
 
 declare const window: any;
@@ -17,7 +17,7 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
         encoder: Base64Encoder = window.atob,
     ): JWTToken<Header, Body> {
 
-        const tokenMap: TokenMap<Header, Body> | null = parseJWTToken(token, encoder);
+        const tokenMap: TokenMap<Header & JWTFixedHeader, Body> | null = parseJWTToken(token, encoder);
 
         if (!tokenMap) {
             throw new Error("[Sudoo-JWT-Web] Invalid Token");
@@ -30,18 +30,18 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
         );
     }
 
-    private readonly _header: Header;
+    private readonly _header: Header & JWTFixedHeader;
     private readonly _body: Body;
     private readonly _signature: string;
 
-    private constructor(header: Header, body: Body, signature: string) {
+    private constructor(header: Header & JWTFixedHeader, body: Body, signature: string) {
 
         this._header = header;
         this._body = body;
         this._signature = signature;
     }
 
-    public get header(): Header {
+    public get header(): Header & JWTFixedHeader {
         return this._header;
     }
     public get body(): Body {
