@@ -34,7 +34,7 @@ describe('Given {JWTToken} Class', (): void => {
             [bodyKey]: bodyValue,
         }, issuedAt);
 
-        const result: JWTToken<any, any> = JWTToken.fromToken(token, mockAtobFunction);
+        const result: JWTToken<any, any> = JWTToken.fromTokenOrThrow(token, mockAtobFunction);
 
         expect(result.header).to.be.deep.equal({
             "alg": "RS256",
@@ -62,7 +62,7 @@ describe('Given {JWTToken} Class', (): void => {
             [bodyKey]: bodyValue,
         }, issuedAt);
 
-        const instance: JWTToken<any, any> = JWTToken.fromToken(token, mockAtobFunction);
+        const instance: JWTToken<any, any> = JWTToken.fromTokenOrThrow(token, mockAtobFunction);
         const result: string = instance.stringify(mockBtoaFunction);
 
         expect(result).to.be.equal(token);
