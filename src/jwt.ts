@@ -11,16 +11,15 @@ declare const window: any;
 
 export class JWTToken<Header extends Record<string, any>, Body extends Record<string, any>> {
 
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    public static fromToken<Header extends Record<string, any>, Body extends Record<string, any>>(
+    public static fromTokenOrNull<Header extends Record<string, any>, Body extends Record<string, any>>(
         token: string,
         encoder: Base64Encoder = window.atob,
-    ): JWTToken<Header, Body> {
+    ): JWTToken<Header, Body> | null {
 
         const tokenMap: TokenMap<Header & JWTFixedHeader, Body> | null = parseJWTToken(token, encoder);
 
         if (!tokenMap) {
-            throw new Error("[Sudoo-JWT-Web] Invalid Token");
+            return null;
         }
 
         return new JWTToken(
@@ -28,6 +27,38 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
             tokenMap.body,
             tokenMap.signature,
         );
+    }
+
+    public static fromTokenOrUndefined<Header extends Record<string, any>, Body extends Record<string, any>>(
+        token: string,
+        encoder: Base64Encoder = window.atob,
+    ): JWTToken<Header, Body> | undefined {
+
+        const instance: JWTToken<Header, Body> | null = JWTToken.fromTokenOrNull<Header, Body>(token, encoder);
+
+        if (instance === null) {
+            return undefined;
+        }
+
+        return instance;
+    }
+
+    public static fromTokenOrThrow<Header extends Record<string, any>, Body extends Record<string, any>>(
+        token: string,
+        encoder: Base64Encoder = window.atob,
+        error?: Error,
+    ): JWTToken<Header, Body> | undefined {
+
+        const instance: JWTToken<Header, Body> | null = JWTToken.fromTokenOrNull<Header, Body>(token, encoder);
+
+        if (instance === null) {
+            if (error) {
+                throw error;
+            }
+            throw new Error("[Sudoo-JWT-Web] Invalid Token");
+        }
+
+        return instance;
     }
 
     private readonly _header: Header & JWTFixedHeader;
