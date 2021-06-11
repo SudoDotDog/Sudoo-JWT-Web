@@ -47,7 +47,7 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
         token: string,
         encoder: Base64Encoder = window.atob,
         error?: Error,
-    ): JWTToken<Header, Body> | undefined {
+    ): JWTToken<Header, Body> {
 
         const instance: JWTToken<Header, Body> | null = JWTToken.fromTokenOrNull<Header, Body>(token, encoder);
 
