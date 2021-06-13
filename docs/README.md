@@ -11,8 +11,10 @@
 
 ```sh
 yarn add @sudoo/jwt-web
+yarn add @sudoo/jwt-config # Peer Dependencies
 # Or
 npm install @sudoo/jwt-web --save
+npm install @sudoo/jwt-config --save # Peer Dependencies
 ```
 
 ## Usage
