@@ -5,11 +5,11 @@
  * @package Unit Test
  */
 
+import { convertJSTimeToUnixTime } from '@sudoo/jwt-config';
 import { generateKeyPair, KeyPair } from '@sudoo/token';
 import { expect } from 'chai';
 import * as Chance from 'chance';
 import { JWTToken } from '../../src/jwt';
-import { convertJSTimeToUnixTime } from '../../src/util';
 import { mockAtobFunction, mockBtoaFunction } from '../mock/atob';
 import { createMockJWT } from '../mock/token';
 

@@ -5,11 +5,11 @@
  * @package Unit Test
  */
 
+import { convertJSTimeToUnixTime, TokenMap, TokenTuple, verifyTokenPatternByTuple } from '@sudoo/jwt-config';
 import { generateKeyPair, KeyPair } from '@sudoo/token';
 import { expect } from 'chai';
 import * as Chance from 'chance';
-import { TokenMap, TokenTuple } from '../../src/declare';
-import { convertJSTimeToUnixTime, parseJWTToken, verifyTokenPatternByTuple } from '../../src/util';
+import { parseJWTToken } from '../../src/util';
 import { mockAtobFunction } from '../mock/atob';
 import { createMockJWT } from '../mock/token';
 
