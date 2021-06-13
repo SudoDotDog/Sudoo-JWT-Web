@@ -4,54 +4,8 @@
  * @description Util
  */
 
-import { Base64Decoder, Base64Encoder, TokenMap, TokenTuple } from "./declare";
-
-export const convertJSTimeToUnixTime = (jsTime: number): number => {
-
-    const draftTime: number = jsTime / 1000;
-    const roundedTime: number = Math.floor(draftTime);
-
-    return roundedTime;
-};
-
-export const getCurrentUnixTime = (): number => {
-
-    return convertJSTimeToUnixTime(Date.now());
-};
-
-export const fixUndefinableDate = (target?: Date): number | undefined => {
-
-    if (typeof target === 'undefined') {
-        return undefined;
-    }
-
-    if (!target.getTime) {
-        return undefined;
-    }
-
-    const time: number = target.getTime();
-
-    if (isNaN(time)) {
-        return undefined;
-    }
-
-    return convertJSTimeToUnixTime(time);
-};
-
-export const deconstructJWT = (token: string): TokenTuple => {
-
-    const tuple: TokenTuple = token.split('.') as TokenTuple;
-
-    return tuple;
-};
-
-export const verifyTokenPatternByTuple = (tuple: TokenTuple): boolean => {
-
-    if (tuple.length !== 3) {
-        return false;
-    }
-    return true;
-};
+import { deconstructJWTEnsure, formatTokenByStructure, TokenMap, TokenTuple, verifyTokenPatternByTuple } from "@sudoo/jwt-config";
+import { Base64Decoder, Base64Encoder } from "./declare";
 
 export const decodeJWTSlice = (
     encoded: string,
@@ -72,7 +26,7 @@ export const parseJWTToken = <Header extends Record<string, any>, Body extends R
     encoder: Base64Encoder,
 ): TokenMap<Header, Body> | null => {
 
-    const jwtTuple: TokenTuple = deconstructJWT(token);
+    const jwtTuple: TokenTuple = deconstructJWTEnsure(token);
     const verifyResult: boolean = verifyTokenPatternByTuple(jwtTuple);
 
     if (!verifyResult) {
@@ -98,7 +52,11 @@ export const stringifyJWTToken = <Header extends Record<string, any>, Body exten
     const encodedHeader: string = encodeJWTSlice(header, decoder);
     const encodedBody: string = encodeJWTSlice(body, decoder);
 
-    const jwtToken = `${encodedHeader}.${encodedBody}.${signature}`;
+    const jwtToken = formatTokenByStructure({
+        header: encodedHeader,
+        body: encodedBody,
+        signature,
+    });
 
     return jwtToken;
 };

@@ -4,8 +4,9 @@
  * @description JWT
  */
 
-import { Base64Decoder, Base64Encoder, JWTFixedHeader, TokenMap } from "./declare";
-import { fixUndefinableDate, parseJWTToken, stringifyJWTToken } from "./util";
+import { fixUndefinableDate, JWTJoinedHeader, TokenMap } from "@sudoo/jwt-config";
+import { Base64Decoder, Base64Encoder } from "./declare";
+import { parseJWTToken, stringifyJWTToken } from "./util";
 
 declare const window: any;
 
@@ -16,7 +17,7 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
         encoder: Base64Encoder = window.atob,
     ): JWTToken<Header, Body> | null {
 
-        const tokenMap: TokenMap<Header & JWTFixedHeader, Body> | null = parseJWTToken(token, encoder);
+        const tokenMap: TokenMap<JWTJoinedHeader<Header>, Body> | null = parseJWTToken(token, encoder);
 
         if (!tokenMap) {
             return null;
@@ -61,18 +62,18 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
         return instance;
     }
 
-    private readonly _header: Header & JWTFixedHeader;
+    private readonly _header: JWTJoinedHeader<Header>;
     private readonly _body: Body;
     private readonly _signature: string;
 
-    private constructor(header: Header & JWTFixedHeader, body: Body, signature: string) {
+    private constructor(header: JWTJoinedHeader<Header>, body: Body, signature: string) {
 
         this._header = header;
         this._body = body;
         this._signature = signature;
     }
 
-    public get header(): Header & JWTFixedHeader {
+    public get header(): JWTJoinedHeader<Header> {
         return this._header;
     }
     public get body(): Body {
