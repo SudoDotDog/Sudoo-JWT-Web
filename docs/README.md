@@ -1,6 +1,6 @@
 # Sudoo-JWT-Web
 
-[![Build Status](https://travis-ci.com/SudoDotDog/Sudoo-JWT-Web.svg?branch=master)](https://travis-ci.com/SudoDotDog/Sudoo-JWT-Web)
+[![Continuous Integration](https://github.com/SudoDotDog/Sudoo-JWT-Web/actions/workflows/ci.yml/badge.svg)](https://github.com/SudoDotDog/Sudoo-JWT-Web/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/SudoDotDog/Sudoo-JWT-Web/branch/master/graph/badge.svg)](https://codecov.io/gh/SudoDotDog/Sudoo-JWT-Web)
 [![npm version](https://badge.fury.io/js/%40sudoo%2Fjwt-web.svg)](https://www.npmjs.com/package/@sudoo/jwt-web)
 [![downloads](https://img.shields.io/npm/dm/@sudoo/jwt-web.svg)](https://www.npmjs.com/package/@sudoo/jwt-web)
