@@ -23,7 +23,7 @@
 		"@sudoo/license": "^1.1.0",
 		"@sudoo/jwt": "^3.1.0",
 		"@sudoo/token": "^1.6.0",
-		"@sudoo/triforce": "^2.9.28"
+		"@sudoo/triforce": "^3.5.1"
 	},
 	"nyc": {
 		"extension": [
