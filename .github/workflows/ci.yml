@@ -17,29 +17,28 @@ jobs:
           - ubuntu-latest
           - windows-latest
         node-version:
-          - 14
-          - 16
+          - 18
         architecture:
           - x64
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           architecture: ${{ matrix.architecture }}
       - name: Install Dependencies
         run: |
-          make install
-          npm install nyc -g
+          npm install @sudoo/build-cli -g
+          sudoo-build --type typescript-react install
       - name: Lint
         run: |
-          make lint
+          sudoo-build --type typescript-react lint
       - name: Build
         run: |
-          make build
+          sudoo-build --type typescript-react build
       - name: Test
         run: |
-          make cov
+          sudoo-build --type typescript-react coverage
       - name: Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
