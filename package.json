@@ -1,7 +1,7 @@
 {
 	"name": "@sudoo/jwt-web",
 	"version": "3.1.0",
-	"description": ":clap: JWT implementation for Web",
+	"description": "JWT implementation for Web",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/SudoDotDog/Sudoo-JWT-Web.git"
@@ -30,7 +30,6 @@
 			".ts"
 		],
 		"include": [
-			"script/**/*.ts",
 			"src/**/*.ts"
 		],
 		"instrument": true,
