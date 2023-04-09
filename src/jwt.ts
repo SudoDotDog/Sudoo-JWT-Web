@@ -8,8 +8,6 @@ import { fixUndefinableDate, JWTJoinedHeader, TokenMap } from "@sudoo/jwt-config
 import { Base64Decoder, Base64Encoder } from "./declare";
 import { parseJWTToken, stringifyJWTToken } from "./util";
 
-declare const window: any;
-
 export class JWTToken<Header extends Record<string, any>, Body extends Record<string, any>> {
 
     public static fromTokenOrNull<Header extends Record<string, any>, Body extends Record<string, any>>(

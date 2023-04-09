@@ -1,6 +1,6 @@
 {
 	"name": "@sudoo/jwt-web",
-	"version": "3.1.0",
+	"version": "3.2.0",
 	"description": "JWT implementation for Web",
 	"repository": {
 		"type": "git",
@@ -20,10 +20,12 @@
 	},
 	"devDependencies": {
 		"@sudoo/build-utils": "^1.0.0",
-		"@sudoo/license": "^2.1.0",
 		"@sudoo/jwt": "^3.5.0",
+		"@sudoo/license": "^2.1.0",
 		"@sudoo/token": "^1.6.1",
-		"@sudoo/triforce": "^3.11.0"
+		"@sudoo/triforce": "^3.11.0",
+		"global-jsdom": "*",
+		"jsdom": "*"
 	},
 	"nyc": {
 		"extension": [
