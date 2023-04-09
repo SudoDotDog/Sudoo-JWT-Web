@@ -83,6 +83,40 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
         return this._signature;
     }
 
+    public verifyNotBefore(currentTime: Date = new Date()): boolean {
+
+        if (typeof this._header.nbf === 'undefined'
+            || this._header.nbf === null) {
+            return true;
+        }
+        if (typeof this._header.nbf !== 'number') {
+            return false;
+        }
+
+        const fixedDate: number | undefined = fixUndefinableDate(currentTime);
+        if (typeof fixedDate !== 'number') {
+            return false;
+        }
+        return fixedDate >= this._header.nbf;
+    }
+
+    public verifyIssueDate(currentTime: Date = new Date()): boolean {
+
+        if (typeof this._header.iat === 'undefined'
+            || this._header.iat === null) {
+            return true;
+        }
+        if (typeof this._header.iat !== 'number') {
+            return false;
+        }
+
+        const fixedDate: number | undefined = fixUndefinableDate(currentTime);
+        if (typeof fixedDate !== 'number') {
+            return false;
+        }
+        return fixedDate >= this._header.iat;
+    }
+
     public verifyExpiration(currentTime: Date = new Date()): boolean {
 
         if (typeof this._header.exp === 'undefined'
@@ -93,12 +127,18 @@ export class JWTToken<Header extends Record<string, any>, Body extends Record<st
             return false;
         }
 
-        const fixedTime: number | undefined = fixUndefinableDate(currentTime);
-
-        if (typeof fixedTime !== 'number') {
+        const fixedDate: number | undefined = fixUndefinableDate(currentTime);
+        if (typeof fixedDate !== 'number') {
             return false;
         }
-        return fixedTime < this._header.exp;
+        return fixedDate <= this._header.exp;
+    }
+
+    public verifyTime(currentTime: Date = new Date()): boolean {
+
+        return this.verifyNotBefore(currentTime)
+            && this.verifyIssueDate(currentTime)
+            && this.verifyExpiration(currentTime);
     }
 
     public stringify(
