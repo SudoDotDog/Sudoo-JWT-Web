@@ -9,8 +9,8 @@ import { convertJSTimeToUnixTime, TokenMap, TokenTuple, verifyTokenPatternByTupl
 import { generateKeyPair, KeyPair } from '@sudoo/token';
 import { expect } from 'chai';
 import * as Chance from 'chance';
-import { parseJWTToken } from '../../src/util';
-import { mockAtobFunction } from '../mock/atob';
+import { decodeJWTSlice, encodeJWTSlice, parseJWTToken } from '../../src/util';
+import { mockAtobFunction, mockBtoaFunction } from '../mock/atob';
 import { createMockJWT } from '../mock/token';
 
 describe('Given [Util] help methods', (): void => {
@@ -42,6 +42,29 @@ describe('Given [Util] help methods', (): void => {
         const result: boolean = verifyTokenPatternByTuple(tuple);
 
         expect(result).to.be.false;
+    });
+
+    // 'ÿ' is UTF-8 0xC3 0xBF — repeating it surfaces bit patterns that map to
+    // '+' and '/' under standard base64, catching regressions to non-url-safe
+    // output.
+    const base64UrlTrigger: string = 'ÿÿÿÿÿÿÿÿÿÿÿÿ';
+    const base64UrlAlphabet: RegExp = /^[A-Za-z0-9_-]+$/;
+
+    it('should encode JWT slices using the base64url alphabet', (): void => {
+
+        const encoded: string = encodeJWTSlice({ k: base64UrlTrigger }, mockBtoaFunction);
+
+        expect(encoded).to.match(base64UrlAlphabet);
+    });
+
+    it('should round-trip JWT slices via encode/decode', (): void => {
+
+        const source: Record<string, string> = { k: base64UrlTrigger };
+
+        const encoded: string = encodeJWTSlice(source, mockBtoaFunction);
+        const decoded: Record<string, string> = decodeJWTSlice(encoded, mockAtobFunction);
+
+        expect(decoded).to.deep.equal(source);
     });
 
     it('should be able to parse JWT token', (): void => {

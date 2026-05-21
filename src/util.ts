@@ -10,15 +10,26 @@ import { Base64Decoder, Base64Encoder } from "./declare";
 export const decodeJWTSlice = (
     encoded: string,
     decoder: Base64Decoder,
-): any => JSON.parse(decoder(encoded));
+): any => {
+
+    const standard: string = encoded
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+    return JSON.parse(decoder(standard));
+};
 
 export const encodeJWTSlice = (
     original: any,
     encoder: Base64Encoder,
-): any => {
+): string => {
 
     const encoded: string = encoder(JSON.stringify(original));
-    return encoded.replace(/=/g, '');
+
+    return encoded
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=/g, '');
 };
 
 export const parseJWTToken = <Header extends Record<string, any>, Body extends Record<string, any>>(

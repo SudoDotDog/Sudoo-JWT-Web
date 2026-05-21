@@ -15,6 +15,5 @@ export const mockAtobFunction = (value: string): string => {
 export const mockBtoaFunction = (value: string): string => {
 
     const buffer: Buffer = Buffer.from(value);
-    const base64: string = buffer.toString('base64');
-    return base64.replace(/=/g, '');
+    return buffer.toString('base64');
 };
